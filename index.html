@@ -601,6 +601,21 @@ footer{background:#080f1c;padding:60px 5% 30px;}
 </div>
 
 
+<!-- ─── COURSES ─── -->
+<section class="courses-section" id="courses">
+  <div class="sec-header">
+    <div class="sec-tag">COURSES</div>
+    <h2>دوراتنا التدريبية</h2>
+    <p>برامج متخصصة في الذكاء الاصطناعي والتحول الرقمي للمؤسسات التعليمية</p>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="career-paths-banner" id="careerPathsIntro" hidden></div>
+    <div class="courses-grid" id="coursesGrid">
+      <p class="courses-load-msg" id="coursesLoadMsg">جاري تحميل الدورات...</p>
+    </div>
+  </div>
+</section>
+
 <!-- ─── FEATURES ─── -->
 <section class="features-section" id="features">
   <div class="sec-header">
@@ -638,21 +653,6 @@ footer{background:#080f1c;padding:60px 5% 30px;}
       <div class="feature-icon">🤝</div>
       <h3>شراكات مؤسسية</h3>
       <p>نقدم حلول تدريبية مخصصة للمدارس والجامعات والمراكز التدريبية بعقود وبرامج مصممة خصيصاً.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ─── COURSES ─── -->
-<section class="courses-section" id="courses">
-  <div class="sec-header">
-    <div class="sec-tag">COURSES</div>
-    <h2>دوراتنا التدريبية</h2>
-    <p>برامج متخصصة في الذكاء الاصطناعي والتحول الرقمي للمؤسسات التعليمية</p>
-  </div>
-  <div style="max-width:1200px;margin:0 auto;">
-    <div class="career-paths-banner" id="careerPathsIntro" hidden></div>
-    <div class="courses-grid" id="coursesGrid">
-      <p class="courses-load-msg" id="coursesLoadMsg">جاري تحميل الدورات...</p>
     </div>
   </div>
 </section>
@@ -1060,6 +1060,7 @@ function mapDbCourseToHome(c, i, certificates) {
     cert: n.cert || c.cert || 'شهادة INEXC', paid,
     price: paid ? (Number(c.price) || 0) : 0,
     days: c.days || (10 + i), career_paths: c.career_paths || null,
+    start_date: c.start_date || null,
     objectives: n.objectives, outcomes: n.outcomes, what_you_learn: n.what_you_learn,
     course_method: n.course_method, target_audience: n.target_audience,
     requirements: n.requirements, certificates: certificates || []
@@ -1171,6 +1172,11 @@ function tick() {
 
 function buildDeadlines() {
   deadlines = courses.map((c, i) => {
+    if (c.start_date) {
+      const d = new Date(c.start_date);
+      d.setHours(23, 59, 59, 0);
+      return d;
+    }
     const d = new Date();
     d.setDate(d.getDate() + c.days);
     d.setHours(d.getHours() + (i * 3) % 24);
